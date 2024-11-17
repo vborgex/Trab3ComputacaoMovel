@@ -15,6 +15,7 @@ Agenda Viagem é um aplicativo Flutter que permite aos usuários registrar e ger
 - Dart
 - intl (para formatação de datas)
 - image_picker (para seleção de imagens)
+- sqflite (para armazenamento local com SQLite)
 
 ## Pré-requisitos
 
@@ -51,3 +52,13 @@ Antes de começar, você precisará ter o Flutter instalado em sua máquina. Voc
 - `lib/`: Contém o código-fonte do aplicativo.
 - `helper/`: Contém classes auxiliares, como `traveldiary_helper.dart`.
 - `assets/`: Contém recursos como imagens.
+  
+## Banco de Dados
+
+O aplicativo utiliza o `sqflite` para armazenar as entradas de viagem localmente. As principais operações de banco de dados incluem:
+
+- Criação de tabelas
+- Inserção de entradas
+- Atualização de entradas
+- Exclusão de entradas
+- Consulta de entradas
