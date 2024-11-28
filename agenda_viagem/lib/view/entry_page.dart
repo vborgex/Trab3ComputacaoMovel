@@ -27,19 +27,24 @@ class _EntryPageState extends State<EntryPage> {
   final _titleFocus = FocusNode();
   String _errorMessage = '';
 
-  @override
-  void initState() {
-    super.initState();
-    if (widget.entry == null) {
-      _editEntry = TravelDiaryEntry();
-    } else {
-      _editEntry = TravelDiaryEntry.fromMap(widget.entry.toMap());
-      _titleController.text = _editEntry.title;
-      _descriptionController.text = _editEntry.description;
-      _localizationController.text = _editEntry.localization;
-      _ratingController.text = _editEntry.rating;
+@override
+void initState() {
+  super.initState();
+  if (widget.entry == null) {
+    _editEntry = TravelDiaryEntry();
+  } else {
+    _editEntry = TravelDiaryEntry.fromMap(widget.entry.toMap());
+    _titleController.text = _editEntry.title;
+    _descriptionController.text = _editEntry.description;
+    _localizationController.text = _editEntry.localization;
+    _ratingController.text = _editEntry.rating;
+    
+    // Verifica se a data não é nula e formata
+    if (_editEntry.date != null) {
+      _dateController.text = DateFormat('dd/MM/yy').format(DateTime.parse(_editEntry.date));
     }
   }
+}
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
