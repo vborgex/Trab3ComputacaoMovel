@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "514068167654",
+    "project_id": "appviagens-cdf85",
+    "storage_bucket": "appviagens-cdf85.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:514068167654:android:f1afffc23a5d67b3553427",
+        "android_client_info": {
+          "package_name": "com.example.agenda_viagem"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEt9FjmgJwr-w3Z_H5Kr-utmqbsmW3rfA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:514068167654:android:8b91a16859e60cd6553427",
+        "android_client_info": {
+          "package_name": "com.example.firebase_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEt9FjmgJwr-w3Z_H5Kr-utmqbsmW3rfA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
