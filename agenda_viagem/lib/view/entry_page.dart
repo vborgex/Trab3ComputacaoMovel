@@ -3,7 +3,6 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 import 'dart:io';
 
@@ -23,6 +22,7 @@ class _EntryPageState extends State<EntryPage> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _localizationController = TextEditingController();
+  final _ratingController = TextEditingController();
   final _dateController = TextEditingController(); // Controller para a data
   final _titleFocus = FocusNode();
   String _errorMessage = '';
@@ -37,9 +37,7 @@ class _EntryPageState extends State<EntryPage> {
       _titleController.text = _editEntry.title;
       _descriptionController.text = _editEntry.description;
       _localizationController.text = _editEntry.localization;
-      _dateController.text = _editEntry.date != null
-          ? DateFormat('dd/MM/yyyy').format(DateTime.parse(_editEntry.date))
-          : ''; // Supondo que a data esteja no formato de string
+      _ratingController.text = _editEntry.rating;
     }
   }
 
@@ -106,30 +104,6 @@ class _EntryPageState extends State<EntryPage> {
               crossAxisAlignment:
                   CrossAxisAlignment.start, // Alinha os campos à esquerda
               children: <Widget>[
-                Center(
-                  child: GestureDetector(
-                      child: Container(
-                        width: 140.0,
-                        height: 140.0,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          image: DecorationImage(
-                            image: _editEntry.img != null
-                                ? FileImage(File(_editEntry.img))
-                                : AssetImage("assets/imgs/landscape.png"),
-                          ),
-                        ),
-                      ),
-                      onTap: () {
-                        ImagePicker.pickImage(source: ImageSource.gallery)
-                            .then((file) {
-                          setState(() {
-                            _editEntry.img = file.path;
-                          });
-                        });
-                      }),
-                ),
-                SizedBox(height: 10), // Espaçamento entre a imagem e o título
                 SizedBox(height: 10), // Espaçamento entre a imagem e o título
                 TextField(
                   controller: _titleController,
@@ -220,6 +194,41 @@ class _EntryPageState extends State<EntryPage> {
                     });
                   },
                 ),
+                SizedBox(height: 10), // Espaçamento entre os campos
+                SizedBox(
+                  width: 80, // Defina a largura desejada
+                  child: TextField(
+                    keyboardType: TextInputType.number,
+                    controller: _ratingController,
+                    maxLength: 2, // Limite de caracteres (apenas o número)
+                    decoration: InputDecoration(
+                      labelText: "Avaliação",
+                      labelStyle: TextStyle(color: Color.fromARGB(255, 28, 28, 28)), // Cor do label
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Color.fromARGB(255, 28, 28, 28)), // Cor quando focado
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Color.fromARGB(255, 28, 28, 28)), // Cor quando não focado
+                      ),
+                      suffixText: "/10", // Sufixo que será exibido
+                    ),
+                    cursorColor: Color.fromARGB(255, 28, 28, 28), // Cor do cursor
+                    onChanged: (text) {
+                      _entryEdited = true;
+                      setState(() {
+                        // Validação para garantir que a entrada está no formato correto
+                        if (text.isEmpty || int.tryParse(text) != null && int.parse(text) >= 0 && int.parse(text) <= 10) {
+                          _editEntry.rating = text;
+                          print("Avaliação: $_editEntry.rating");
+                        } else {
+                          // Se a entrada não for válida, você pode limpar o campo ou mostrar uma mensagem de erro
+                          _ratingController.clear();
+                          _editEntry.rating = '';
+                        }
+                      });
+                    },
+                  ),
+),
                 SizedBox(height: 10), // Espaçamento entre os campos
                 TextField(
                   controller: _descriptionController,

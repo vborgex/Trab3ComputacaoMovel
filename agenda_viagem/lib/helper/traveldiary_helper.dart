@@ -7,7 +7,7 @@ String dateColumn = "dateColumn";
 String titleColumn = "titleColumn";
 String descriptionColumn = "descriptionColumn";
 String localizationColumn = "localizationColumn";
-String imgColumn = "imgColumn";
+String ratingColumn = "ratingColumn";
 String diaryTable = "diaryTable";
 
 class TravelDiaryHelper {
@@ -27,10 +27,12 @@ class TravelDiaryHelper {
   }
 
   Future<Database> initDb() async{
+    
     final databasePath = await getDatabasesPath();
     final path = join(databasePath, 'traveldiarynew.db');
-    return await openDatabase(path, version: 2, onCreate: (Database db, int version) async {
-      await db.execute("CREATE TABLE $diaryTable($idColumn INTEGER PRIMARY KEY, $dateColumn TEXT, $titleColumn TEXT, $descriptionColumn TEXT, $localizationColumn TEXT, $imgColumn TEXT)");
+
+    return await openDatabase(path, version: 4, onCreate: (Database db, int version) async {
+      await db.execute("CREATE TABLE $diaryTable($idColumn INTEGER PRIMARY KEY, $dateColumn TEXT, $titleColumn TEXT, $descriptionColumn TEXT, $localizationColumn TEXT, $ratingColumn TEXT)");
     });
   }
   
@@ -53,7 +55,7 @@ class TravelDiaryHelper {
 
   Future<TravelDiaryEntry> getTravelDiaryEntry(int id) async{
     Database dbEntry = await db;
-    List<Map> maps = await dbEntry.query(diaryTable, columns: [idColumn, dateColumn, titleColumn, descriptionColumn, localizationColumn, imgColumn], where: "$idColumn = ?", whereArgs: [id]);
+    List<Map> maps = await dbEntry.query(diaryTable, columns: [idColumn, dateColumn, titleColumn, descriptionColumn, localizationColumn, ratingColumn], where: "$idColumn = ?", whereArgs: [id]);
     if(maps.isNotEmpty){
       return TravelDiaryEntry.fromMap(maps.first);
     }else{
@@ -78,7 +80,7 @@ class TravelDiaryEntry {
   String title;
   String description;
   String localization;
-  String img;
+  String rating;
   String date; // O formato da data pode ser ajustado conforme necessário.
 
   TravelDiaryEntry();
@@ -89,7 +91,7 @@ class TravelDiaryEntry {
     title = map[titleColumn];
     description = map[descriptionColumn];
     localization = map[localizationColumn];
-    img = map[imgColumn];
+    rating = map[ratingColumn];
   }
 
   Map<String, dynamic> toMap() {
@@ -98,7 +100,7 @@ class TravelDiaryEntry {
       titleColumn: title,
       descriptionColumn: description,
       localizationColumn: localization,
-      imgColumn: img,
+      ratingColumn: rating,
     };
     if (id != null) {
       map[idColumn] = id;
@@ -108,6 +110,6 @@ class TravelDiaryEntry {
 
   @override
   String toString() {
-    return "TravelDiaryEntry(id: $id,  date: $date, title: $title, description: $description, localization: $localization, img: $img)";
+    return "TravelDiaryEntry(id: $id,  date: $date, title: $title, description: $description, localization: $localization, rating: $rating)";
   }
 }
