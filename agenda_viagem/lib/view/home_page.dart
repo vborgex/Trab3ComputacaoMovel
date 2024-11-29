@@ -7,7 +7,9 @@ import 'package:intl/intl.dart';
 
 import '../traveldiaryentry.dart';
 import 'entry_page.dart';
-enum OrderOptions{orderDateAsc, orderDateDesc}
+
+enum OrderOptions { orderDateAsc, orderDateDesc }
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -17,7 +19,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final FirestoreService service = FirestoreService();
-  
+
   get entries => null;
   @override
   Widget build(BuildContext context) {
@@ -43,7 +45,8 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Color.fromARGB(255, 28, 28, 28),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 16.0), // Adiciona espaçamento embaixo da AppBar
+        padding: const EdgeInsets.only(
+            top: 16.0), // Adiciona espaçamento embaixo da AppBar
         child: StreamBuilder<QuerySnapshot>(
           stream: service.read(),
           builder: (context, snapshot) {
@@ -54,16 +57,16 @@ class _HomePageState extends State<HomePage> {
                 itemBuilder: (context, index) {
                   DocumentSnapshot document = entries[index];
                   String docID = document.id;
-                  Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-
-                  int id = data['id'] as int;
+                  Map<String, dynamic> data =
+                      document.data() as Map<String, dynamic>;
                   String title = data['title'] as String;
                   String description = data['description'] as String;
-                  String localization = data['localization'] as String; 
+                  String localization = data['localization'] as String;
                   String rating = data['rating'] as String;
                   String date = data['date'] as String;
                   return Container(
-                    margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 5.0, horizontal: 10.0),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10.0),
@@ -77,17 +80,23 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                     child: ListTile(
-                      title: Text(title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0, color: Color.fromARGB(255, 28, 28, 28)  )),
+                      title: Text(title,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18.0,
+                              color: Color.fromARGB(255, 28, 28, 28))),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           IconButton(
                             onPressed: () => _showEntryPage(docID: docID),
-                            icon: const Icon(Icons.edit, color: Color.fromARGB(255, 28, 28, 28)),
+                            icon: const Icon(Icons.edit,
+                                color: Color.fromARGB(255, 28, 28, 28)),
                           ),
                           IconButton(
-                            onPressed: () => _confirmDelete(context, docID), 
-                            icon: const Icon(Icons.delete, color: Color.fromARGB(255, 28, 28, 28)),
+                            onPressed: () => _confirmDelete(context, docID),
+                            icon: const Icon(Icons.delete,
+                                color: Color.fromARGB(255, 28, 28, 28)),
                           ),
                         ],
                       ),
@@ -114,6 +123,7 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
   void _showEntryPage({String? docID}) async {
     TravelDiaryEntry? entry;
 
@@ -126,16 +136,20 @@ class _HomePageState extends State<HomePage> {
 
     // Navega para a EntryPage, passando a entrada (ou null se for uma nova entrada)
     final recEntry = await Navigator.push(
-  context,
-  MaterialPageRoute(builder: (context) => EntryPage(entry: entry)), // 'entry' pode ser nulo  
-);
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              EntryPage(entry: entry)), // 'entry' pode ser nulo
+    );
 
     // Se uma entrada for retornada, atualiza ou cria a entrada no Firestore
     if (recEntry != null) {
       if (docID != null) {
-        await service.update(docID, recEntry.date, recEntry.title, recEntry.description, recEntry.localization, recEntry.rating);
+        await service.update(docID, recEntry.date, recEntry.title,
+            recEntry.description, recEntry.localization, recEntry.rating);
       } else {
-        await service.create(recEntry.date, recEntry.title, recEntry.description, recEntry.localization, recEntry.rating);
+        await service.create(recEntry.date, recEntry.title,
+            recEntry.description, recEntry.localization, recEntry.rating);
       }
       setState(() {
         // Atualiza a lista de entradas
@@ -146,11 +160,12 @@ class _HomePageState extends State<HomePage> {
 
   void _confirmDelete(BuildContext context, String docID) {
     showDialog(
-      context: context, builder: (context) {
+      context: context,
+      builder: (context) {
         return AlertDialog(
           title: const Text("Confirmar Exclusão"),
           content: const Text(
-          "Tem certeza de que deseja excluir esta entrada? Esta ação não pode ser desfeita."),
+              "Tem certeza de que deseja excluir esta entrada? Esta ação não pode ser desfeita."),
           actions: <Widget>[
             TextButton(
               child: const Text("Cancelar"),
@@ -164,7 +179,7 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(color: Colors.red),
               ),
               onPressed: () {
-                Navigator.pop(context); 
+                Navigator.pop(context);
                 service.delete(docID);
                 setState(() {
                   entries.removeAt(docID); // Remove a entrada da lista
