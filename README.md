@@ -12,49 +12,21 @@ Agenda Viagem é um aplicativo Flutter que permite aos usuários registrar e ger
 - Flutter
 - Dart
 - intl (para formatação de datas)
-- sqflite (para armazenamento local com SQLite)
-
-## Pré-requisitos
-
-Antes de começar, você precisará ter o Flutter instalado em sua máquina. Você pode seguir as instruções de instalação no [site oficial do Flutter](https://flutter.dev/docs/get-started/install).
-
-## Como Executar o Projeto
-
-1. Clone o repositório:
-
-   ```bash
-   git clone https://github.com/seuusuario/agenda_viagem.git
-   ```
-
-2. Navegue até o diretório do projeto:
-
-   ```bash
-   cd agenda_viagem
-   ```
-
-3. Instale as dependências:
-
-   ```bash
-   flutter pub get
-   ```
-
-4. Execute o aplicativo:
-
-   ```bash
-   flutter run
-   ```
+- Firebase Firestore (para armazenamento em nuvem)
+- Firebase Auth (para autenticação de usuários)
 
 ## Estrutura do Projeto
 
 - `lib/`: Contém o código-fonte do aplicativo.
-- `helper/`: Contém classes auxiliares, como `traveldiary_helper.dart`.
+- `service/`: Contém classes auxiliares para o CRUD do Firestore, como `firestore_service.dart`.
+- `view/`: Contém as telas do aplicativo.
   
 ## Banco de Dados
 
-O aplicativo utiliza o `sqflite` para armazenar as entradas de viagem localmente. As principais operações de banco de dados incluem:
+O aplicativo utiliza o **Firebase Firestore** para armazenar as entradas de viagem na nuvem. As principais operações de banco de dados incluem:
 
-- Criação de tabelas
-- Inserção de entradas
-- Atualização de entradas
-- Exclusão de entradas
-- Consulta de entradas
+- **Adicionar**: Criação de novas entradas de viagem no Firestore.
+- **Editar**: Atualização de entradas existentes.
+- **Excluir**: Remoção de entradas do Firestore.
+- **Consulta**: Recuperação de entradas de viagem do Firestore, com suporte a consultas em tempo real.
+
