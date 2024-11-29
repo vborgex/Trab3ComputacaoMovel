@@ -21,12 +21,11 @@ class _HomePageState extends State<HomePage> {
   get entries => null;
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true, // Centraliza o título corretamente
+        centerTitle: true,
         title: Row(
-          mainAxisSize: MainAxisSize.min, // Faz o Row ocupar apenas o espaço necessário
+          mainAxisSize: MainAxisSize.min,
           children: const [
             Icon(
               Icons.landscape,
@@ -43,61 +42,64 @@ class _HomePageState extends State<HomePage> {
         ),
         backgroundColor: Color.fromARGB(255, 28, 28, 28),
       ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: service.read(),
-        builder: (context, snapshot){
-          if(snapshot.hasData){
-            List entries = snapshot.data!.docs;
-            return ListView.builder(
-              itemCount: entries.length,
-              itemBuilder: (context, index) {
-                DocumentSnapshot document = entries[index];
-                String docID = document.id;
-                Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+      body: Padding(
+        padding: const EdgeInsets.only(top: 16.0), // Adiciona espaçamento embaixo da AppBar
+        child: StreamBuilder<QuerySnapshot>(
+          stream: service.read(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              List entries = snapshot.data!.docs;
+              return ListView.builder(
+                itemCount: entries.length,
+                itemBuilder: (context, index) {
+                  DocumentSnapshot document = entries[index];
+                  String docID = document.id;
+                  Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
-                int id = data['id'] as int;
-                String title = data['title'] as String;
-                String description = data['description'] as String;
-                String localization = data['localization'] as String; 
-                String rating = data['rating'] as String;
-                String date = data['date'] as String;
-                return Container(
-                  margin: const EdgeInsets.all(8.0), // Espaço entre os ListTiles
-                  decoration: BoxDecoration(
-                    color: Colors.white, // Cor de fundo
-                    borderRadius: BorderRadius.circular(5.0), // Bordas arredondadas
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.2), // Sombra leve
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3), // Sombra na parte inferior
-                      ),
-                    ],
-                  ),
-                  child: ListTile(
-                    title: Text(title),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          onPressed: () => _showEntryPage(docID: docID),
-                          icon: const Icon(Icons.edit),
-                        ),
-                        IconButton(
-                          onPressed: () => _confirmDelete(context, docID), 
-                          icon: const Icon(Icons.delete),
+                  int id = data['id'] as int;
+                  String title = data['title'] as String;
+                  String description = data['description'] as String;
+                  String localization = data['localization'] as String; 
+                  String rating = data['rating'] as String;
+                  String date = data['date'] as String;
+                  return Container(
+                    margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
                         ),
                       ],
                     ),
-                  ),
-                );
-              },
-            );
-          }else{
-            return const Text("Sem entries...");
-          }
-        },
+                    child: ListTile(
+                      title: Text(title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0, color: Color.fromARGB(255, 28, 28, 28)  )),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            onPressed: () => _showEntryPage(docID: docID),
+                            icon: const Icon(Icons.edit, color: Color.fromARGB(255, 28, 28, 28)),
+                          ),
+                          IconButton(
+                            onPressed: () => _confirmDelete(context, docID), 
+                            icon: const Icon(Icons.delete, color: Color.fromARGB(255, 28, 28, 28)),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
+            } else {
+              return const Text("Sem entries...");
+            }
+          },
+        ),
       ),
       backgroundColor: Color.fromARGB(255, 204, 204, 204),
       floatingActionButton: FloatingActionButton(
@@ -110,7 +112,7 @@ class _HomePageState extends State<HomePage> {
         ),
         backgroundColor: Color.fromARGB(255, 28, 28, 28),
       ),
-    ); 
+    );
   }
   void _showEntryPage({String? docID}) async {
     TravelDiaryEntry? entry;
