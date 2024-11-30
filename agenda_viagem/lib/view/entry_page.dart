@@ -23,13 +23,13 @@ class _EntryPageState extends State<EntryPage> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _localizationController = TextEditingController();
   final TextEditingController _ratingController = TextEditingController();
-  final TextEditingController  _dateController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
   final _titleFocus = FocusNode();
 
   String _errorMessage = '';
   String _dateErrorMessage = '';
 
-   @override
+  @override
   void initState() {
     super.initState();
     if (widget.entry == null) {
@@ -49,7 +49,7 @@ class _EntryPageState extends State<EntryPage> {
   }
 
   Future<void> _selectDate(BuildContext context) async {
-     print("Abrindo DatePicker...");
+    print("Abrindo DatePicker...");
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: _editEntry.date != null
@@ -65,7 +65,6 @@ class _EntryPageState extends State<EntryPage> {
       });
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -124,10 +123,12 @@ class _EntryPageState extends State<EntryPage> {
                   labelText: "Título",
                   labelStyle: TextStyle(color: Color.fromARGB(255, 28, 28, 28)),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color.fromARGB(255, 28, 28, 28)),
+                    borderSide:
+                        BorderSide(color: Color.fromARGB(255, 28, 28, 28)),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color.fromARGB(255, 28, 28, 28)),
+                    borderSide:
+                        BorderSide(color: Color.fromARGB(255, 28, 28, 28)),
                   ),
                 ),
                 cursorColor: Color.fromARGB(255, 28, 28, 28),
@@ -156,12 +157,15 @@ class _EntryPageState extends State<EntryPage> {
                     readOnly: true,
                     decoration: InputDecoration(
                       labelText: "Data",
-                      labelStyle: TextStyle(color: Color.fromARGB(255, 28, 28, 28)),
+                      labelStyle:
+                          TextStyle(color: Color.fromARGB(255, 28, 28, 28)),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Color.fromARGB(255, 28, 28, 28)),
+                        borderSide:
+                            BorderSide(color: Color.fromARGB(255, 28, 28, 28)),
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Color.fromARGB(255, 28, 28, 28)),
+                        borderSide:
+                            BorderSide(color: Color.fromARGB(255, 28, 28, 28)),
                       ),
                     ),
                   ),
@@ -183,10 +187,12 @@ class _EntryPageState extends State<EntryPage> {
                   labelText: "Localização",
                   labelStyle: TextStyle(color: Color.fromARGB(255, 28, 28, 28)),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color.fromARGB(255, 28, 28, 28)),
+                    borderSide:
+                        BorderSide(color: Color.fromARGB(255, 28, 28, 28)),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color.fromARGB(255, 28, 28, 28)),
+                    borderSide:
+                        BorderSide(color: Color.fromARGB(255, 28, 28, 28)),
                   ),
                 ),
                 cursorColor: Color.fromARGB(255, 28, 28, 28),
@@ -206,12 +212,15 @@ class _EntryPageState extends State<EntryPage> {
                   maxLength: 2,
                   decoration: InputDecoration(
                     labelText: "Avaliação",
-                    labelStyle: TextStyle(color: Color.fromARGB(255, 28, 28, 28)),
+                    labelStyle:
+                        TextStyle(color: Color.fromARGB(255, 28, 28, 28)),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Color.fromARGB(255, 28, 28, 28)),
+                      borderSide:
+                          BorderSide(color: Color.fromARGB(255, 28, 28, 28)),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Color.fromARGB(255, 28, 28, 28)),
+                      borderSide:
+                          BorderSide(color: Color.fromARGB(255, 28, 28, 28)),
                     ),
                     suffixText: "/10",
                   ),
@@ -241,10 +250,12 @@ class _EntryPageState extends State<EntryPage> {
                   labelText: "Descrição",
                   labelStyle: TextStyle(color: Color.fromARGB(255, 28, 28, 28)),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color.fromARGB(255, 28, 28, 28)),
+                    borderSide:
+                        BorderSide(color: Color.fromARGB(255, 28, 28, 28)),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color.fromARGB(255, 28, 28, 28)),
+                    borderSide:
+                        BorderSide(color: Color.fromARGB(255, 28, 28, 28)),
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4.0),

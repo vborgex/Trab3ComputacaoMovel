@@ -2,6 +2,7 @@ import 'package:agenda_viagem/service/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:agenda_viagem/components/my_button.dart';
 import 'package:agenda_viagem/components/my_textfield.dart';
+import 'package:agenda_viagem/view/home_page.dart';
 import 'package:agenda_viagem/view/register_page.dart';
 
 class LoginPage extends StatelessWidget {
@@ -9,7 +10,7 @@ class LoginPage extends StatelessWidget {
 
   final userNameController = TextEditingController();
   final passwordController = TextEditingController();
-  final AuthService authService = AuthService();
+  final AuthService authService = AuthService(); // Instância do AuthService
 
   void signUserIn(BuildContext context) async {
     // Mostra o indicador de progresso
@@ -22,27 +23,39 @@ class LoginPage extends StatelessWidget {
 
     // Tenta fazer o login usando o AuthService
     final user = await authService.signInWithEmailPassword(
-      userNameController.text,
-      passwordController.text,
+      userNameController.text.trim(),
+      passwordController.text.trim(),
       context,
     );
 
-    // Se o login for bem-sucedido, fecha o indicador de progresso e vai para a HomePage (ou outra tela)
+    // Fecha o indicador de progresso
+    Navigator.pop(context);
+
+    // Se o login for bem-sucedido, redireciona para a HomePage
     if (user != null) {
-      Navigator.pop(context); // Fecha o indicador de progresso
-      // Redirecionar para a página inicial ou home
-      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
     } else {
-      Navigator.pop(
-          context); // Fecha o indicador de progresso caso o login falhe
+      // Caso falhe, pode exibir uma mensagem (opcional)
+      showDialog(
+        context: context,
+        builder: (context) {
+          return const AlertDialog(
+            title: Text("Erro"),
+            content: Text("Usuário ou senha inválidos."),
+          );
+        },
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 235, 235, 235),
-      body: SafeArea(
+      backgroundColor: const Color.fromARGB(255, 235, 235, 235),
+      body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             const SizedBox(height: 50),
@@ -51,7 +64,7 @@ class LoginPage extends StatelessWidget {
             Text(
               'Seja Bem Vindo!',
               style: TextStyle(
-                color: Color.fromARGB(255, 28, 28, 28),
+                color: const Color.fromARGB(255, 28, 28, 28),
                 fontSize: 25,
               ),
             ),

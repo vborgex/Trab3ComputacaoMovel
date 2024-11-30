@@ -1,4 +1,5 @@
 import 'package:agenda_viagem/firebase_options.dart';
+import 'package:agenda_viagem/view/auth_page.dart';
 import 'package:agenda_viagem/view/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: LoginPage());
+    return MaterialApp(debugShowCheckedModeBanner: false, home: AuthPage());
   }
 }
