@@ -54,10 +54,18 @@ class _HomePageState extends State<HomePage> {
       body: Padding(
         padding: const EdgeInsets.only(top: 16.0),
         child: StreamBuilder<QuerySnapshot>(
-          stream: service.read(),
+          stream: service.read(), // Lê apenas as viagens do usuário logado
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              List entries = snapshot.data!.docs;
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            }
+
+            if (snapshot.hasError) {
+              return Center(child: Text("Erro ao carregar dados."));
+            }
+
+            if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+              List<DocumentSnapshot> entries = snapshot.data!.docs;
               return ListView.builder(
                 itemCount: entries.length,
                 itemBuilder: (context, index) {
@@ -65,49 +73,24 @@ class _HomePageState extends State<HomePage> {
                   String docID = document.id;
                   Map<String, dynamic> data =
                       document.data() as Map<String, dynamic>;
-                  String title = data['title'] as String;
-                  return Container(
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 5.0, horizontal: 10.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
+                  String title = data['title'];
+                  String description = data['description'];
+
+                  return ListTile(
+                    title: Text(title),
+                    subtitle: Text(description),
+                    trailing: IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () => _showEntryPage(docID: docID),
                     ),
-                    child: ListTile(
-                      title: Text(title,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18.0,
-                              color: Color.fromARGB(255, 28, 28, 28))),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            onPressed: () => _showEntryPage(docID: docID),
-                            icon: const Icon(Icons.edit,
-                                color: Color.fromARGB(255, 28, 28, 28)),
-                          ),
-                          IconButton(
-                            onPressed: () => _confirmDelete(context, docID),
-                            icon: const Icon(Icons.delete,
-                                color: Color.fromARGB(255, 28, 28, 28)),
-                          ),
-                        ],
-                      ),
-                    ),
+                    onTap: () {
+                      // Exibir detalhes ou editar
+                    },
                   );
                 },
               );
             } else {
-              return const Text("Sem entradas...");
+              return Center(child: Text("Nenhuma viagem cadastrada."));
             }
           },
         ),
