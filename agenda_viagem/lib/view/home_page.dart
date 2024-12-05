@@ -45,7 +45,8 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             icon: const Icon(Icons.logout, color: Colors.white),
             onPressed: () async {
-              await FirebaseAuth.instance.signOut(); // Faz o logout
+              await FirebaseAuth.instance.signOut();
+              Navigator.pushReplacementNamed(context, '/login'); // Faz o logout
             },
             tooltip: "Sair",
           ),
@@ -71,24 +72,47 @@ class _HomePageState extends State<HomePage> {
                 itemBuilder: (context, index) {
                   DocumentSnapshot document = entries[index];
                   String docID = document.id;
-                  Map<String, dynamic> data =
-                      document.data() as Map<String, dynamic>;
-                  String title = data['title'];
-                  String description = data['description'];
+                  Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
-                  return ListTile(
-                    title: Text(title),
-                    subtitle: Text(description),
-                    trailing: IconButton(
-                      icon: Icon(Icons.edit),
-                      onPressed: () => _showEntryPage(docID: docID),
+                  String title = data['title'] as String;
+                  String description = data['description'] as String;
+                  String localization = data['localization'] as String; 
+                  String rating = data['rating'] as String;
+                  String date = data['date'] as String;
+                  return Container(
+                    margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
                     ),
-                    onTap: () {
-                      // Exibir detalhes ou editar
-                    },
+                    child: ListTile(
+                      title: Text(title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0, color: Color.fromARGB(255, 28, 28, 28)  )),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            onPressed: () => _showEntryPage(docID: docID),
+                            icon: const Icon(Icons.edit, color: Color.fromARGB(255, 28, 28, 28)),
+                          ),
+                          IconButton(
+                            onPressed: () => _confirmDelete(context, docID), 
+                            icon: const Icon(Icons.delete, color: Color.fromARGB(255, 28, 28, 28)),
+                          ),
+                        ]
+                      )
+                    )
                   );
-                },
+                }
               );
+
             } else {
               return Center(child: Text("Nenhuma viagem cadastrada."));
             }
@@ -106,6 +130,7 @@ class _HomePageState extends State<HomePage> {
         ),
         backgroundColor: const Color.fromARGB(255, 28, 28, 28),
       ),
+      
     );
   }
 
